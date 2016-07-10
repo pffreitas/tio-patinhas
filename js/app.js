@@ -1,0 +1,33 @@
+import React from 'react';
+import firebase from 'firebase';
+import { Router, Route, IndexRoute } from 'react-router';
+import {UserActions} from './actions';
+
+import Template from './pages/template.jsx';
+import HomePage from './pages/home.jsx';
+
+var app = firebase.initializeApp({
+  apiKey: "AIzaSyDrFnpxeeFiwbFzSJmIVbT1iiVIX1X6XnE",
+  authDomain: "tio-patinhas.firebaseapp.com",
+  databaseURL: "https://tio-patinhas.firebaseio.com",
+  storageBucket: "tio-patinhas.appspot.com",
+});
+
+function auth(){
+  UserActions.login();
+}
+
+const App = () => {
+  return (
+    <Router>
+      <Route component={Template}>
+        <IndexRoute component={HomePage} />
+        <Route path="/" component={HomePage} onEnter={auth} />
+      </Route>
+    </Router>
+  );
+};
+
+App.displayName = 'App';
+
+export default App;

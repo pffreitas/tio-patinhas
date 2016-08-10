@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {LancamentosStore} from '../store';
 import {ClientActions} from '../actions';
+
+import moment from 'moment';
+import accounting from 'accounting';
+
 class Lancamento extends React.Component{
 
   constructor(){
@@ -37,34 +41,42 @@ class Lancamento extends React.Component{
   }
 
   componentDidMount(){
-    ReactDOM.findDOMNode(this).addEventListener("paste", this.handlePaste);
+    window.addEventListener("paste", this.handlePaste);
     LancamentosStore.addChangeListener(this._onChange);
   }
 
   componentWillUnmount(){
-    ReactDOM.findDOMNode(this).removeEventListener("paste", this.handlePaste);
+    window.removeEventListener("paste", this.handlePaste);
     LancamentosStore.removeChangeListener(this._onChange);
   }
 
   render(){
     let lancamentos = this.state.lancamentos.map((l, i) => {
       return (
-        <li key={`key-${i}`}>
-          <span>{l.data}</span>
-          <span>{l.descricao}</span>
-          <span>{l.valor}</span>
-        </li>
+        <tr key={`key-${i}`}>
+          <td>{moment(l.data).format("DD/MM/YYYY")}</td>
+          <td>{l.descricao}</td>
+          <td>{accounting.formatMoney(l.valor, 'R$', 2, '.', ',')}</td>
+        </tr>
       );
     })
 
     return(
       <div>
-        <div contentEditable="true">
-        </div>
+        <table className="sv-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lancamentos}
+          </tbody>
+        </table>
 
-        <ul>
-          {lancamentos}
-        </ul>
+        <div contentEditable="true"></div>
       </div>
     );
   }

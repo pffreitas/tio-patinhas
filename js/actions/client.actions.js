@@ -34,6 +34,14 @@ export default {
       type: ActionTypes.ADD_LANCAMENTOS,
       lancamentos: lancamentos
     });
+  },
+
+  addCategoria(parent, categoria){
+    dispatch({
+      type: ActionTypes.ADD_CATEGORIA,
+      parent: parent,
+      categoria: categoria
+    });
   }
   
 };

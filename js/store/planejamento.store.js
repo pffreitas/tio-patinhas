@@ -8,12 +8,22 @@ import accounting from 'accounting';
 
 const CHANGE_EVENT = 'change';
 
-let _lancamentos = [];
+let _planejamento = [
+  {name: "Moradia", nested:[
+    {name: "Aluguel", ammount: 1300}, 
+    {name: "Energia"},
+    {name: "NET"}
+  ]},
+  {name: "Carro", nested:[
+    {name: "Financiamento"},
+    {name: "Licenciamento"}
+  ]},
+];
 
-var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
+var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
 
-  getLancamentos(){
-    return _lancamentos;
+  getPlanejamento(){
+    return _planejamento;
   },
 
   emitChange(){
@@ -31,8 +41,8 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: register(function (action) {
     switch (action.type) {
-      case ActionTypes.ADD_LANCAMENTOS:
-        addLancamentos(action.lancamentos);
+      case ActionTypes.ADD_CATEGORIA:
+        addCategoria(action.parent, action.categoria);
         break;
       default:
       // Do nothing
@@ -41,17 +51,15 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
 
 });
 
-function addLancamentos(lancamentos){
-  _lancamentos = lancamentos.map((l) => {
-    return {
-      data: moment(l[0], "DD/MM").toJSON(),
-      descricao: l[1],
-      valor: accounting.unformat(l[2], ',')
-    }
-  });
-
-  LancamentosStore.emitChange();
+function addCategoria(parent, categoria){
+  if(parent.nested){
+      parent.nested.push(categoria);
+  }else{
+      parent.nested = [categoria];
+  }
+  
+  PlanejamentoStore.emitChange();
 }
 
 
-export default LancamentosStore;
+export default PlanejamentoStore;

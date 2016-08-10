@@ -1,0 +1,30 @@
+ul.tp-cat-list li{
+	padding-left: 25px;
+	list-style: none;
+}
+
+
+.tp-cat-list-add{
+	border-bottom: 3px dotted transparent;
+}
+
+.tp-cat-list-add:hover{
+	border-bottom: 3px dotted #eee;
+	cursor: pointer;
+}
+
+.tp-menu ul li{
+	display: inline;
+	margin-right: 10px;
+}
+
+.tp-menu ul li:after{
+	content: '\2022';
+    font-size: 1.65em;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.tp-menu ul li:last-child:after{
+	content: '';
+}

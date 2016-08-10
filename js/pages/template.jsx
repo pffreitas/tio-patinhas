@@ -1,5 +1,6 @@
 import React from 'react';
 import {User} from '../components';
+import {Menu} from '../components';
 
 class Template extends React.Component {
 
@@ -10,12 +11,13 @@ class Template extends React.Component {
     render() {
         return (
           <div>
-            <header>
-              <User />
-            </header>
-            <section className='sv-container-horizontal'>
-              {this.props.children}
-            </section>
+            <Menu />
+
+            <div className="sv-container">
+              <div className="sv-grid-10 sv-grid-1-offset">
+                {this.props.children}
+              </div>
+            </div>
           </div>
         );
     }

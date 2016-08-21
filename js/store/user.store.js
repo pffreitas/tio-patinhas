@@ -62,8 +62,6 @@ function auth(){
         var email = error.email;
         var credential = error.credential;
 
-        console.log(email);
-
         _user = null
         UserStore.emitChange();
       });

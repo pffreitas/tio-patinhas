@@ -14,6 +14,8 @@ class PlanejamentoPage extends React.Component{
 			categoria: {}
 		}
 
+		ClientActions.fetchPlanejamento();
+
 		this._onChange = this._onChange.bind(this);
 		this.addCategoria = this.addCategoria.bind(this);
 	}
@@ -46,7 +48,7 @@ class PlanejamentoPage extends React.Component{
 				<ul className="tp-cat-list">
 					<li>
 						<div className="sv-container">
-							<div className="sv-grid-8">{cat.name}</div>
+							<div className="sv-grid-10">{cat.name}</div>
 							<div className="sv-grid-2 sv-text-right">{accounting.formatMoney(cat.ammount, 'R$', 2, '.', ',')}</div>
 						</div>
 						

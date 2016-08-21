@@ -8,17 +8,8 @@ import accounting from 'accounting';
 
 const CHANGE_EVENT = 'change';
 
-let _planejamento = [
-  {name: "Moradia", nested:[
-    {name: "Aluguel", ammount: 1300}, 
-    {name: "Energia"},
-    {name: "NET"}
-  ]},
-  {name: "Carro", nested:[
-    {name: "Financiamento"},
-    {name: "Licenciamento"}
-  ]},
-];
+let _planejamento = [];
+
 
 var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
 
@@ -44,6 +35,9 @@ var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
       case ActionTypes.ADD_CATEGORIA:
         addCategoria(action.parent, action.categoria);
         break;
+      case ActionTypes.FETCH_PLANEJAMENTO:
+        fetchPlan();
+        break;        
       default:
       // Do nothing
     }
@@ -51,13 +45,21 @@ var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
 
 });
 
+function fetchPlan(){
+  firebase.database().ref('plan').once("value").then((snapshot)=> {
+    _planejamento = snapshot.val();
+    PlanejamentoStore.emitChange();
+  });
+}
+
 function addCategoria(parent, categoria){
   if(parent.nested){
       parent.nested.push(categoria);
   }else{
       parent.nested = [categoria];
   }
-  
+
+  firebase.database().ref('plan').set(_planejamento);
   PlanejamentoStore.emitChange();
 }
 

@@ -1,3 +1,16 @@
+.avatar img{
+	border-radius: 20px;
+	height: 35px;
+	width: auto;
+}
+
+.avatar span{
+	line-height: 35px;
+    height: 35px;
+    margin-left: 10px;
+    float: right;
+}
+
 ul.tp-cat-list li{
 	padding-left: 25px;
 	list-style: none;

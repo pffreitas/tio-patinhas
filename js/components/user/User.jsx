@@ -1,7 +1,6 @@
 import React from 'react';
 import {UserStore} from '../../store';
 import {UserActions} from '../../actions';
-import Avatar from 'material-ui/Avatar';
 
 class User extends React.Component{
 
@@ -36,9 +35,9 @@ class User extends React.Component{
     }
 
     return (
-      <div>
-        <Avatar src={this.state.user.photoURL} />
-        {this.state.user.displayName}
+      <div className="avatar">
+        <img src={this.state.user.photoURL} />
+        <span>{this.state.user.displayName}</span>
       </div>
     );
   }

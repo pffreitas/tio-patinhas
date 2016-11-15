@@ -5,6 +5,7 @@ import ActionTypes from '../constants/action-types';
 import _ from 'lodash';
 import moment from 'moment';
 import accounting from 'accounting';
+import {v4} from 'node-uuid';
 
 const CHANGE_EVENT = 'change';
 
@@ -33,11 +34,14 @@ var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
   dispatcherIndex: register(function (action) {
     switch (action.type) {
       case ActionTypes.ADD_CATEGORIA:
-        addCategoria(action.parent, action.categoria);
+        addCategoria(action.categoria);
         break;
       case ActionTypes.FETCH_PLANEJAMENTO:
         fetchPlan();
         break;        
+      case ActionTypes.SAVE_PLANEJAMENTO:
+        savePlanejamento(action.planejamento);
+        break;              
       default:
       // Do nothing
     }
@@ -48,20 +52,27 @@ var PlanejamentoStore = Object.assign({}, EventEmitter.prototype, {
 function fetchPlan(){
   firebase.database().ref('plan').once("value").then((snapshot)=> {
     _planejamento = snapshot.val();
+
+    if(!_planejamento){
+      _planejamento = [];
+    }
+    
     PlanejamentoStore.emitChange();
   });
 }
 
-function addCategoria(parent, categoria){
-  if(parent.nested){
-      parent.nested.push(categoria);
-  }else{
-      parent.nested = [categoria];
-  }
+function addCategoria(categoria){
+  categoria['id'] = v4();
 
+  _planejamento.push(categoria);
   firebase.database().ref('plan').set(_planejamento);
   PlanejamentoStore.emitChange();
 }
 
+
+function savePlanejamento(_planejamento){
+  firebase.database().ref('plan').set(_planejamento);
+  PlanejamentoStore.emitChange(); 
+}
 
 export default PlanejamentoStore;

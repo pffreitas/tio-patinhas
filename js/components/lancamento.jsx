@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {LancamentosStore} from '../store';
 import {ClientActions} from '../actions';
+import classnames  from 'classnames';
 
 import moment from 'moment';
 import accounting from 'accounting';
@@ -11,10 +12,13 @@ class Lancamento extends React.Component{
   constructor(){
     super();
     this.state = {
-      lancamentos:  []
+      lancamentos:  LancamentosStore.getLancamentos()
     }
 
+    ClientActions.fetchLancamentos();
+
     this._onChange = this._onChange.bind(this);
+    this.selectCell = this.selectCell.bind(this);
   }
 
   handlePaste(e){
@@ -50,20 +54,34 @@ class Lancamento extends React.Component{
     LancamentosStore.removeChangeListener(this._onChange);
   }
 
+  selectCell(e){
+    if(this.state.selectedCell){
+      this.state.selectedCell.classList.remove("selected");
+    }
+
+    e.target.classList.add("selected");
+
+    this.setState({
+      selectedCell: e.target
+    });
+  }
+
   render(){
-    let lancamentos = this.state.lancamentos.map((l, i) => {
+
+
+    let lancamentos = this.state.lancamentos.map((l) => {
       return (
-        <tr key={`key-${i}`}>
-          <td>{moment(l.data).format("DD/MM/YYYY")}</td>
-          <td>{l.descricao}</td>
-          <td>{accounting.formatMoney(l.valor, 'R$', 2, '.', ',')}</td>
+        <tr key={`key-${l.key}`}>
+          <td onClick={this.selectCell}>{moment(l.data).format("DD/MM/YYYY")}</td>
+          <td onClick={this.selectCell}>{l.descricao}</td>
+          <td onClick={this.selectCell}>{accounting.formatMoney(l.valor, 'R$', 2, '.', ',')}</td>
         </tr>
       );
     })
 
     return(
       <div>
-        <table className="sv-table">
+        <table className="sv-table tp-lanc-table">
           <thead>
             <tr>
               <th>Data</th>

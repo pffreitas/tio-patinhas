@@ -34,6 +34,9 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
       case ActionTypes.ADD_LANCAMENTOS:
         addLancamentos(action.lancamentos);
         break;
+      case ActionTypes.FETCH_LANCAMENTOS:
+        fetchLancamentos();
+        break;
       default:
       // Do nothing
     }
@@ -41,8 +44,21 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
 
 });
 
+function fetchLancamentos(){
+  firebase.database().ref("lancamentos").once("value").then((snapshot) => {
+    _lancamentos = [];
+
+    _.forOwn(snapshot.val(), (value, key) => {
+      value['key'] = key;
+      _lancamentos.push(value);
+    });
+    
+    LancamentosStore.emitChange();
+  });
+}
+
 function addLancamentos(lancamentos){
-  _lancamentos = lancamentos.map((l) => {
+  lancamentos = lancamentos.map((l) => {
     return {
       data: moment(l[0], "DD/MM").toJSON(),
       descricao: l[1],
@@ -50,6 +66,11 @@ function addLancamentos(lancamentos){
     }
   });
 
+  lancamentos.forEach((l)=>{
+    l['key'] = firebase.database().ref("lancamentos").push(l).key;
+    _lancamentos.push(l);
+  })
+  
   LancamentosStore.emitChange();
 }
 

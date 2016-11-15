@@ -3,15 +3,22 @@ import ActionTypes from '../constants/action-types';
 
 export default {
 
-  getSaidas() {
+  fetchLancamentos() {
     dispatch({
-      type: ActionTypes.FETCH
+      type: ActionTypes.FETCH_LANCAMENTOS
     });
   },
 
   fetchPlanejamento() {
     dispatch({
       type: ActionTypes.FETCH_PLANEJAMENTO
+    });
+  },
+
+  savePlanejamento(planejamento) {
+    dispatch({
+      type: ActionTypes.SAVE_PLANEJAMENTO,
+      planejamento: planejamento
     });
   },
 
@@ -36,10 +43,9 @@ export default {
     });
   },
 
-  addCategoria(parent, categoria){
+  addCategoria(categoria){
     dispatch({
       type: ActionTypes.ADD_CATEGORIA,
-      parent: parent,
       categoria: categoria
     });
   }

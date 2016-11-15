@@ -26,7 +26,7 @@ class AdicionarCategoria extends React.Component {
 
 	adicionar(){
 		this.open();
-		this.props.adicionar(this.props.parent, this.state.categoria);
+		this.props.adicionar(this.state.categoria);
 	}
 
 	render(){
@@ -36,7 +36,7 @@ class AdicionarCategoria extends React.Component {
 			newCat = (
 				<form className="sv-form--inline">
 					<div className="sv-container">
-						<div className="sv-grid-8">
+						<div className="sv-grid-10">
 							<input type="text" className="full" value={this.state.categoria.name} onChange={(e) => {this.handleChange(e, "name")}}/>
 						</div>
 
@@ -46,7 +46,7 @@ class AdicionarCategoria extends React.Component {
 					</div>
 
 					<div className="sv-container">
-						<div className="sv-grid-10">
+						<div className="sv-grid-12">
 							<button type="button" className="sv-button primary" onClick={this.adicionar}>Adicionar</button>
 							<button type="button" className="sv-button link" onClick={this.open}>Cancelar</button>
 						</div>
@@ -56,7 +56,9 @@ class AdicionarCategoria extends React.Component {
 		}else{
 			newCat = (
 				<div className="sv-container">
-					<div className="sv-grid-10 tp-cat-list-add" onClick={this.open}></div>
+					<div className="sv-grid-12">
+						<button className="sv-button link" onClick={this.open}>Adicionar Categoria</button>
+					</div>
 				</div>
 			);
 		}

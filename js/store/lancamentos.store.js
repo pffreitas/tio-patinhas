@@ -37,6 +37,12 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
       case ActionTypes.FETCH_LANCAMENTOS:
         fetchLancamentos();
         break;
+      case ActionTypes.SET_CATEGORIA:
+        setCategoria(action.lancamento, action.categoria);
+        break;   
+      case ActionTypes.SET_MEIO_PAGAMENTO:
+        setMeioPagamento(action.lancamento, action.meioPagamento);
+        break;                    
       default:
       // Do nothing
     }
@@ -45,7 +51,10 @@ var LancamentosStore = Object.assign({}, EventEmitter.prototype, {
 });
 
 function fetchLancamentos(){
-  firebase.database().ref("lancamentos").once("value").then((snapshot) => {
+  firebase.database()
+  .ref("lancamentos")
+  .orderByChild("data")
+  .once("value").then((snapshot) => {
     _lancamentos = [];
 
     _.forOwn(snapshot.val(), (value, key) => {
@@ -72,6 +81,20 @@ function addLancamentos(lancamentos){
   })
   
   LancamentosStore.emitChange();
+}
+
+function setCategoria(lancamento, categoria){
+  let lancRef = firebase.database().ref("lancamentos/" + lancamento);
+  lancRef.update({
+    "categoria": categoria
+  });
+}
+
+function setMeioPagamento(lancamento, meioPagamento){
+  let lancRef = firebase.database().ref("lancamentos/" + lancamento);
+  lancRef.update({
+    "meioPagamento": meioPagamento
+  });
 }
 
 

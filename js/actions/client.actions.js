@@ -48,6 +48,35 @@ export default {
       type: ActionTypes.ADD_CATEGORIA,
       categoria: categoria
     });
-  }
+  },
+
+  setCategoria(lancamento, categoria){
+    dispatch({
+      type: ActionTypes.SET_CATEGORIA,
+      lancamento: lancamento,
+      categoria: categoria
+    });
+  },
+
+
+  fetchConfig() {
+    dispatch({
+      type: ActionTypes.FETCH_CONFIG
+    });
+  },
+
+  setMeioPagamento(lancamento, meioPagamento){
+    dispatch({
+      type: ActionTypes.SET_MEIO_PAGAMENTO,
+      lancamento: lancamento,
+      meioPagamento: meioPagamento
+    });
+  },
+
+  fetchAcompanhamento() {
+    dispatch({
+      type: ActionTypes.FETCH_ACOMPANHAMENTO
+    });
+  }  
   
 };

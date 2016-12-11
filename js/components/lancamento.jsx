@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {LancamentosStore} from '../store';
+import {LancamentosStore, PlanejamentoStore, ConfigStore} from '../store';
 import {ClientActions} from '../actions';
 import classnames  from 'classnames';
+import Categoria from './categoria.jsx';
+import MeioPagamento from './meio-pagamento.jsx';
 
 import moment from 'moment';
 import accounting from 'accounting';
@@ -12,13 +14,27 @@ class Lancamento extends React.Component{
   constructor(){
     super();
     this.state = {
-      lancamentos:  LancamentosStore.getLancamentos()
+      lancamentos:  LancamentosStore.getLancamentos(),
+      planejamento: PlanejamentoStore.getPlanejamento(),
+      config: ConfigStore.getConfig()
     }
 
     ClientActions.fetchLancamentos();
+    ClientActions.fetchPlanejamento();
+    ClientActions.fetchConfig();
 
     this._onChange = this._onChange.bind(this);
-    this.selectCell = this.selectCell.bind(this);
+  }
+
+  _onChange(){
+    let cats = [];
+    this._flat(null, null, PlanejamentoStore.getPlanejamento(), cats);
+
+    this.setState({
+      lancamentos: LancamentosStore.getLancamentos(),
+      planejamento: cats,
+      config: ConfigStore.getConfig()
+    });
   }
 
   handlePaste(e){
@@ -38,43 +54,56 @@ class Lancamento extends React.Component{
     ClientActions.addLancamentos(rows);
   }
 
-  _onChange(){
-    this.setState({
-      lancamentos: LancamentosStore.getLancamentos()
-    });
+  _flat(parent, group, nested, cats){
+    nested.forEach((c) => {
+      if(c.nested && c.nested.length > 0){
+
+        let groupName = c.name;
+        if (parent != null){
+          groupName = parent.name + "/" + c.name;
+        }
+
+        this._flat(parent, groupName, c.nested, cats);
+      }else{
+        cats.push({id: c.id, name: c.name, group: group}); 
+      }
+    })
   }
 
   componentDidMount(){
     window.addEventListener("paste", this.handlePaste);
     LancamentosStore.addChangeListener(this._onChange);
+    PlanejamentoStore.addChangeListener(this._onChange);
+    ConfigStore.addChangeListener(this._onChange);
   }
 
   componentWillUnmount(){
     window.removeEventListener("paste", this.handlePaste);
     LancamentosStore.removeChangeListener(this._onChange);
+    ConfigStore.removeChangeListener(this._onChange);
   }
 
-  selectCell(e){
-    if(this.state.selectedCell){
-      this.state.selectedCell.classList.remove("selected");
-    }
+  setCategoria(lancamentoId, catId){
+    ClientActions.setCategoria(lancamentoId, catId);
+  }
 
-    e.target.classList.add("selected");
-
-    this.setState({
-      selectedCell: e.target
-    });
+  setMeioPagamento(lancamentoId, mpId){
+    ClientActions.setMeioPagamento(lancamentoId, mpId);
   }
 
   render(){
-
-
     let lancamentos = this.state.lancamentos.map((l) => {
       return (
         <tr key={`key-${l.key}`}>
-          <td onClick={this.selectCell}>{moment(l.data).format("DD/MM/YYYY")}</td>
-          <td onClick={this.selectCell}>{l.descricao}</td>
-          <td onClick={this.selectCell}>{accounting.formatMoney(l.valor, 'R$', 2, '.', ',')}</td>
+          <td>{moment(l.data).format("DD/MM/YYYY")}</td>
+          <td>{l.descricao}</td>
+          <td>
+            <Categoria value={l.categoria} categorias={this.state.planejamento} onChange={ (cId)=> {this.setCategoria(l.key, cId)}} />
+          </td>
+          <td>
+            <MeioPagamento value={l.meioPagamento} meiosPagamento={this.state.config.meio_pagamento} onChange={ (mpId)=> {this.setMeioPagamento(l.key, mpId)}} />
+          </td>
+          <td className="currency">{accounting.formatMoney(l.valor, 'R$', 2, '.', ',')}</td>
         </tr>
       );
     })
@@ -84,9 +113,11 @@ class Lancamento extends React.Component{
         <table className="sv-table tp-lanc-table">
           <thead>
             <tr>
-              <th>Data</th>
-              <th>Descrição</th>
-              <th>Valor</th>
+              <th className="lancamento-data-col">Data</th>
+              <th className="lancamento-descricao-col">Descrição</th>
+              <th className="lancamento-categoria-col">Categoria</th>
+              <th className="lancamento-meio-pagamento-col">Meio de Pagamento</th>
+              <th className="currency lancamento-valor-col">Valor</th>
             </tr>
           </thead>
           <tbody>

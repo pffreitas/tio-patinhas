@@ -7,15 +7,15 @@ class Menu extends React.Component{
 
 	render(){
 		return(
-        <div className="sv-container tp-menu">
-          <div className="sv-grid-8 sv-grid-1-offset">
+        <div className="sv-row tp-menu">
+          <div className="sv-column">
             <ul>
               <li><Link to="/plan">Planejamento</Link></li>
               <li><Link to="/">Lançamento</Link></li>
               <li><Link to="/acompanhamento">Acompanhamento</Link></li>
             </ul>
           </div>
-          <div className="sv-grid-2 sv-text-right">
+          <div className="sv-column sv-text-right">
             <User />
           </div>
         </div>

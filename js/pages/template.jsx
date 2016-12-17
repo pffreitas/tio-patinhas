@@ -13,8 +13,8 @@ class Template extends React.Component {
           <div>
             <Menu />
 
-            <div className="sv-container">
-              <div className="sv-grid-10 sv-grid-1-offset">
+            <div className="sv-row">
+              <div className="sv-column">
                 {this.props.children}
               </div>
             </div>

@@ -69,8 +69,37 @@ function addCategoria(categoria){
   PlanejamentoStore.emitChange();
 }
 
+function  _flat(parent, group, nested, cats){
+  nested.forEach((c) => {
+    if(c.nested && c.nested.length > 0){
+
+      let groupName = c.name;
+      if (parent != null){
+        groupName = parent.name + "/" + c.name;
+      }
+
+      _flat(parent, groupName, c.nested, cats);
+    }else{
+      cats.push({id: c.id, name: c.name, group: group}); 
+    }
+  })
+}
+
+function _updateCategorias(){
+  let cats = []
+  _flat(null, null, _planejamento, cats);
+
+  let _cats = {};
+  cats.forEach((c) => {
+    _cats[c.id] = c;
+  });
+
+  firebase.database().ref('categorias').set(_cats);
+}
 
 function savePlanejamento(_planejamento){
+  _updateCategorias(_planejamento);
+
   firebase.database().ref('plan').set(_planejamento);
   PlanejamentoStore.emitChange(); 
 }

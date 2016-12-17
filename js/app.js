@@ -8,7 +8,6 @@ import Template from './pages/template.jsx';
 import HomePage from './pages/home.jsx';
 import PlanejamentoPage from './pages/planejamento.jsx';
 import AcompanhamentoPage from './pages/acompanhamento.jsx';
-import {database} from './database';
 
 var app = firebase.initializeApp({
   apiKey: "AIzaSyDrFnpxeeFiwbFzSJmIVbT1iiVIX1X6XnE",
@@ -17,7 +16,6 @@ var app = firebase.initializeApp({
   storageBucket: "tio-patinhas.appspot.com",
 });
 
-database.init();
 
 injectTapEventPlugin(); 
 

@@ -47,6 +47,8 @@ function fetchAcompanhamento(){
   let start = moment().startOf("month").utc().format();
   let end = moment().endOf("month").utc().format();
 
+  _topCategorias = [];
+
   firebase.database()
   .ref('lancamentos')
   .orderByChild("data")
@@ -56,22 +58,21 @@ function fetchAcompanhamento(){
 
     let _lancamentos = snapshot.val();
 
-    let top = _.chain(_lancamentos)
+    _.chain(_lancamentos)
      .groupBy("categoria")
      .map((v, k) => {
         return {categoria: k, valor: _.sumBy(v, "valor")}  
       })
      .orderBy(["valor"], ["desc"])
      .slice(0, 4)
+     .map((cat) => {
+        database.planejamento.findCategoriaById(cat.categoria, (c) => {
+          _topCategorias.push({categoria: c.name, valor: cat.valor});
+          AcompanhamentoStore.emitChange();
+        });
+     })
      .value();
 
-    top.forEach((cat) => {
-      cat.categoria = database.planejamento.findById(cat.categoria).name;
-    });
-
-    _topCategorias = top;
-    AcompanhamentoStore.emitChange();
-    
   });
 }
 

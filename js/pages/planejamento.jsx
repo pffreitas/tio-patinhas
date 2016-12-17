@@ -20,6 +20,7 @@ class PlanejamentoPage extends React.Component{
 
 		this._onChange = this._onChange.bind(this);
 		this.addCategoria = this.addCategoria.bind(this);
+		this.savePlanejamento = this.savePlanejamento.bind(this);
 	}
 
 	_onChange(){
@@ -39,6 +40,11 @@ class PlanejamentoPage extends React.Component{
 	addCategoria(cat){
 		ClientActions.addCategoria(cat);
 	}
+
+	savePlanejamento(){
+		ClientActions.savePlanejamento(this.state.planejamento);
+	}
+
 
 	currentRow(cat){
 		let catId = null;
@@ -154,6 +160,7 @@ class PlanejamentoPage extends React.Component{
 				</div>
 
 				<AdicionarCategoria adicionar={this.addCategoria} />
+				<button onClick={this.savePlanejamento}>Salvar</button>
 			</div>
 		);
 	}

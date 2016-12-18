@@ -12,12 +12,7 @@ class Template extends React.Component {
         return (
           <div>
             <Menu />
-
-            <div className="sv-row">
-              <div className="sv-column">
-                {this.props.children}
-              </div>
-            </div>
+            {this.props.children}
           </div>
         );
     }

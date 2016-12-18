@@ -152,7 +152,7 @@ class PlanejamentoPage extends React.Component{
 
 		return(
 			<div>
-				<h2 className="thin">Planejamento</h2>
+				<h2 className="thin page-title">Planejamento</h2>
 				<div>
 					<ul className="tp-cat-list">
 						{categorias}

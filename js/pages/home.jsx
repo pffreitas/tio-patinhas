@@ -23,7 +23,7 @@ class HomePage extends React.Component{
   render(){
     return(
       <div>
-        <h2 className="thin">Lançamento</h2>
+        <h2 className="thin page-title">Lançamento</h2>
         <div>
           <Lancamento />
         </div>

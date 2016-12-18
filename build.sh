@@ -13,3 +13,5 @@ cp -R dist/* public/dist/
 
 # html
 cp index.html public/
+
+firebase deploy

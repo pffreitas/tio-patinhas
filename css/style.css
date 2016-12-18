@@ -1,7 +1,3 @@
-body {
-	margin: 20px 40px;
-}
-
 .avatar img{
 	border-radius: 20px;
 	height: 35px;
@@ -35,6 +31,10 @@ ul.tp-cat-list li p {
 	
 }
 
+.tp-menu{
+	margin-bottom: 0;
+	padding: 10 40px 0 40px;
+}
 
 .tp-menu ul li{
 	display: inline;
@@ -152,4 +152,44 @@ h3.section-title {
 	font-weight: 600;
 	color: #cccccc;
 	padding-bottom: 4px;
+}
+
+
+
+.wrapper {
+    position: relative; 
+    overflow: hidden;
+    width: 100%; 
+}
+
+.canvas {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateX(0);
+    transition: .3s ease all;
+}
+
+.hamb {
+    height: 100%;
+    position: absolute;
+    transform: translateX(-220px);
+    width: 220px;
+    background: #fdfdfd;
+    box-shadow: -3px -3px 11px -5px rgba(0, 0, 0, 0.2) inset;
+}
+
+.wrapper.show-menu .canvas {
+    transform: translateX(220px);
+}
+
+.conteudo {
+	padding: 1px 40px;
+}
+
+.hamb-bar {
+	background: cornflowerblue;
+	height: 45px;
+	color: white;
+	padding: 15px 10px;
 }

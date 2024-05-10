@@ -14,18 +14,18 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Transaction } from '../../models';
 import { teal } from '@mui/material/colors';
 
-interface StyledDropzoneProps {
-    isDragActive: boolean;
-}
+// interface StyledDropzoneProps {
+//     isDragActive: boolean;
+// }
 
-const StyledDropzone = styled.div<StyledDropzoneProps>`
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  background-color: ${props => props.isDragActive ? '#e9e9e9' : 'white'};
-  display: ${props => props.isDragActive ? 'block' : 'none'};
-  transition: background-color 0.3s ease;
-`;
+// const StyledDropzone = styled.div<StyledDropzoneProps>`
+//   border: 2px dashed #ccc;
+//   padding: 20px;
+//   text-align: center;
+//   background-color: ${props => props.isDragActive ? '#e9e9e9' : 'white'};
+//   display: ${props => props.isDragActive ? 'block' : 'none'};
+//   transition: background-color 0.3s ease;
+// `;
 
 const CarouselContainer = styled.div`
     display: flex;
@@ -123,12 +123,12 @@ const HomePage = () => {
 
     useEffect(() => {
         dispatch(fetchBuckets());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchTransactions());
         dispatch(fetchTransactionsByMonth(month));
-    }, [loadingSetBucket, month]);
+    }, [loadingSetBucket, month, dispatch]);
 
 
     const openBucketSheet = (transactionId: string | undefined) => {

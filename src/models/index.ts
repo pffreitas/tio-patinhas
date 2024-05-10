@@ -1,17 +1,25 @@
 type Bucket = {
-    id: string;
+    id: string | null;
+    group: string;
     name: string;
-    month: Date;
+    slug: string;
+    baseline: boolean;
+    month?: string;
     amount: number;
-    status: string;
+    patterns?: string[];
 }
 
 type Transaction = {
-    id: string;
-    date: Date;
+    id?: string;
+    date: string;
+    month: string;
     amount: number;
     description: string;
-    bucket: Bucket;
+    hashcode: string;
+    deleted: boolean;
+    bucketId: string | null;
+    bucketSlug: string | null;
+    bucketName: string | null;
 }
 
 export type {

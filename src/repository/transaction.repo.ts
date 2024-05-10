@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Transaction } from "../models";
-import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, setDoc, query, where, DocumentData, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, getDoc, doc, updateDoc, setDoc, query, where, DocumentData, deleteDoc } from "firebase/firestore";
 
 const COLLECTION_NAME = "transactions";
 

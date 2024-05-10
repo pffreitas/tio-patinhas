@@ -1,8 +1,7 @@
-import { PayloadAction, createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { Transaction } from '../../models';
 import TransactionService from '../../service/transaction.service';
 import { chain } from 'lodash';
-import { act } from 'react-dom/test-utils';
 
 type TransactionsPageState = {
     transactions: Transaction[];

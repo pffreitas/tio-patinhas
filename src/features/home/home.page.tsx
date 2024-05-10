@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Box, Button, Card, CardActions, CardContent, Drawer, FormControl, IconButton, LinearProgress, List, ListItem, ListItemButton, ListItemText, ListSubheader, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Drawer, FormControl, IconButton, List, ListItem, ListItemButton, ListItemText, ListSubheader, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import CircularProgress, {
     circularProgressClasses,
-    CircularProgressProps,
 } from '@mui/material/CircularProgress';
 import moment from 'moment';
 import { RootState } from '../../store';
@@ -129,7 +128,7 @@ const HomePage = () => {
     useEffect(() => {
         dispatch(fetchTransactions());
         dispatch(fetchTransactionsByMonth(month));
-    }, [loadingSetBucket]);
+    }, [loadingSetBucket, month]);
 
 
     const openBucketSheet = (transactionId: string | undefined) => {

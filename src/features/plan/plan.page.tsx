@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Autocomplete, Box, Button, Card, CardActions, CardContent, Chip, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemText, ListSubheader, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemText, ListSubheader, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { addBucket, deleteBucket, fetchBuckets } from './plan.slice';
 import { useDispatch, useSelector } from 'react-redux';

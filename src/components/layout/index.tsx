@@ -32,7 +32,7 @@ export const Layout: React.FC = () => {
     if (parsedTransactions !== undefined && parsedTransactions.length > 0) {
       navigate('/transactions');
     }
-  }, [parsedTransactions]);
+  }, [parsedTransactions, navigate]);
 
   const handlePaste = async (event: React.ClipboardEvent) => {
     const text = event.clipboardData.getData('Text');

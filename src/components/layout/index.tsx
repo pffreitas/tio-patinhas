@@ -49,7 +49,7 @@ export const Layout: React.FC = () => {
       <Box sx={{ mt: '60px' }} padding={2}>
         <Outlet />
       </Box>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 99999 }} elevation={3}>
+      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, paddingBottom: 3, zIndex: 99999 }} elevation={3}>
         <BottomNavigation
           showLabels
           value={value}

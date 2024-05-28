@@ -46,7 +46,7 @@ export const Layout: React.FC = () => {
       <Paper sx={{ position: 'fixed', top: 0, left: 0, right: 0, height: 60, zIndex: 99999 }} elevation={2}>
         <Typography variant="h6" sx={{ p: 2 }}>Bucket Bucks</Typography>
       </Paper>
-      <Box sx={{ mt: '60px' }} padding={2}>
+      <Box  marginTop={'60px'} padding={2} paddingBottom={'60px'}>
         <Outlet />
       </Box>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, paddingBottom: 3, zIndex: 99999 }} elevation={3}>

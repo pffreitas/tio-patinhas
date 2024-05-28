@@ -118,7 +118,8 @@ const getBucket = async (transaction: Transaction, bucketSlug: string): Promise<
 const TransactionService = {
     parseCvsString,
     saveTransactions,
-    setBucket
+    setBucket,
+    hashTransaction
 
 }
 

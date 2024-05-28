@@ -13,6 +13,7 @@ import { formatCurrency, formatPercentage } from '../../components/format';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Transaction } from '../../models';
 import { teal } from '@mui/material/colors';
+import TransactionService from '../../service/transaction.service';
 
 // interface StyledDropzoneProps {
 //     isDragActive: boolean;
@@ -97,12 +98,12 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({ progress, total }
 
 const bull = (
     <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+        component="span"
+        sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
     >
-      •
+        •
     </Box>
-  );
+);
 
 
 const HomePage = () => {
@@ -174,13 +175,22 @@ const HomePage = () => {
         }
     }
 
+    const unbucketedTransactions = chain(transactions)
+        .filter(t => t.id !== undefined && t.bucketId === null)
+        .sortBy(t => moment(t.date).valueOf())
+        .value();
+
+
+        const duplicateTransactions = chain(transactions).groupBy(t => TransactionService.hashTransaction(t)).filter(t => t.length > 1).value();
+        console.log({duplicateTransactions});
+
     return (
         <>
             <Drawer
                 anchor="bottom"
                 open={bucketSheetOpen}
                 onClose={closeBucketSheet}>
-                <Box sx={{ height: '300px', paddingX: 3, marginBottom: '50px' }}>
+                <Box sx={{ height: '300px', paddingX: 3, marginBottom: '80px' }}>
                     <List>
                         {chain(buckets).groupBy((b) => b.group).map((buckets, group) => (
                             <>
@@ -206,7 +216,7 @@ const HomePage = () => {
                 anchor="bottom"
                 open={bucketDetailsSheetOpen}
                 onClose={handleCloseBucketDetailsSheet}>
-                <Box sx={{ height: '300px', paddingX: 3, marginBottom: '50px' }}>
+                <Box sx={{ height: '300px', paddingX: 3, marginBottom: '80px' }}>
                     <List>
                         {chain(transactions).filter(t => t.bucketId === curentBucket).map((transaction) => (
                             <ListItem disablePadding key={transaction.id}>
@@ -221,10 +231,10 @@ const HomePage = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box>
-                    <Typography variant="h5">Unbucketed Transactions</Typography>
+                    <Typography variant="h5">Unbucketed Transactions ({unbucketedTransactions.length})</Typography>
                     <CarouselContainer>
                         <Carousel>
-                            {transactions.filter(t => t.id && t.bucketId === null).map((transaction) => {
+                            {unbucketedTransactions.map((transaction) => {
                                 return (
                                     <CarouselItem key={`carousel-item-${transaction.id}`}>
                                         <Card sx={{ flex: 1, position: 'relative' }}>
@@ -306,8 +316,8 @@ const HomePage = () => {
                                 </Box>
 
                                 <Box sx={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                        <Typography variant='h6' sx={{ lineHeight: '1.25rem' }}>{formatCurrency(chain(monthTransactions).sumBy(t => t.amount).value())}</Typography>
-                                        <Typography variant='body2' color={teal[700]}>{formatCurrency(chain(buckets).sumBy(b => b.amount).value())}</Typography>
+                                    <Typography variant='h6' sx={{ lineHeight: '1.25rem' }}>{formatCurrency(chain(monthTransactions).sumBy(t => t.amount).value())}</Typography>
+                                    <Typography variant='body2' color={teal[700]}>{formatCurrency(chain(buckets).sumBy(b => b.amount).value())}</Typography>
                                 </Box>
                             </CardContent>
                         </Card>
@@ -322,7 +332,6 @@ const HomePage = () => {
                                 const bucketGroup = bucket.group;
                                 const bucketName = bucket.name;
                                 const pct = transactionsTotal / bucket.amount;
-                                console.log(bucket.id, bucketName, transactions);
                                 return (
                                     <Card key={bucketName}>
                                         <CardContent onClick={() => handleOpenBucketDetailsSheet(chain(transactions).first().value().bucketId)}>

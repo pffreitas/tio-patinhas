@@ -181,15 +181,16 @@ const HomePage = () => {
         .value();
 
 
-        const duplicateTransactions = chain(transactions).groupBy(t => TransactionService.hashTransaction(t)).filter(t => t.length > 1).value();
-        console.log({duplicateTransactions});
+    const duplicateTransactions = chain(transactions).groupBy(t => TransactionService.hashTransaction(t)).filter(t => t.length > 1).value();
+    console.log({ duplicateTransactions });
 
     return (
         <>
             <Drawer
                 anchor="bottom"
                 open={bucketSheetOpen}
-                onClose={closeBucketSheet}>
+                onClose={closeBucketSheet}
+                PaperProps={{ sx: { bottom: '80px' } }}>
                 <Box sx={{ height: '300px', paddingX: 3, marginBottom: '80px' }}>
                     <List>
                         {chain(buckets).groupBy((b) => b.group).map((buckets, group) => (
@@ -215,7 +216,8 @@ const HomePage = () => {
             <Drawer
                 anchor="bottom"
                 open={bucketDetailsSheetOpen}
-                onClose={handleCloseBucketDetailsSheet}>
+                onClose={handleCloseBucketDetailsSheet}
+                PaperProps={{ sx: { bottom: '80px' } }}>
                 <Box sx={{ height: '300px', paddingX: 3, marginBottom: '80px' }}>
                     <List>
                         {chain(transactions).filter(t => t.bucketId === curentBucket).map((transaction) => (
@@ -333,8 +335,8 @@ const HomePage = () => {
                                 const bucketName = bucket.name;
                                 const pct = transactionsTotal / bucket.amount;
                                 return (
-                                    <Card key={bucketName}>
-                                        <CardContent onClick={() => handleOpenBucketDetailsSheet(chain(transactions).first().value().bucketId)}>
+                                    <Card key={bucketName} sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <CardContent sx={{ flex: 1 }} onClick={() => handleOpenBucketDetailsSheet(chain(transactions).first().value().bucketId)}>
                                             <Typography variant="caption" color={teal[700]}>{bucketGroup}{bull}{bucketName}</Typography>
                                             <Typography variant="h5" component="div">{formatCurrency(transactionsTotal)}</Typography>
                                             <Typography variant="body2">{formatPercentage(pct)}</Typography>
